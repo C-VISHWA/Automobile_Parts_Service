@@ -1,65 +1,83 @@
-# Automobile Parts Service (Streamlit)
+# Auto Service Management System
 
-A simple Streamlit app for managing automobile parts and services. This repository contains the Streamlit app (`app.py`) and the SQL schema (`project.sql`).
+![Python](https://img.shields.io/badge/Python-3.11-blue?style=for-the-badge&logo=python)
+![Streamlit](https://img.shields.io/badge/Streamlit-1.30.0-red?style=for-the-badge&logo=streamlit)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-orange?style=for-the-badge&logo=mysql)
 
-**Purpose:**
-- Provide an interface for interacting with the parts/service database.
+A full-stack web application for an Auto Service & Parts Management System, built with Streamlit and MySQL. This is a mini-project for the Database Management System (UE23CS351A) course.
 
-**Repository contents:**
-- `app.py` — Streamlit application entry point.
-- `project.sql` — SQL schema / seed data (run this first in your database).
+### Team Members
+* **Gautam Menon** – PES2UG23CS196 https://github.com/GMen0n
+* **C Vishwa** – PES2UG23CS139 https://github.com/C-VISHWA
 
-**Prerequisites**
-- Python 3.8 or newer
-- A running database (PostgreSQL, MySQL, SQLite, etc.)
-- `pip` for installing Python packages
+---
 
-Setup
-1. Run the database schema
+## Key Features
 
-   Use your database client to run `project.sql` so the database tables and sample data are created. Example command:
+* **Admin Dashboard:** A clean, multi-tab interface built with Streamlit for managing different aspects of the auto shop.
+* **Full CRUD Functionality:** Complete Create, Read, and Delete operations for managing mechanics.
+* **Advanced Database Logic:** Demonstrates the use of triggers, stored procedures, and functions to enforce business rules and data integrity.
+* **Dynamic UI:** The "Current Mechanics" list updates in real-time (via `st.rerun()`) after a new mechanic is added or deleted.
+* **Error Handling:** The app provides clear, user-friendly error messages (e.g., from the name-check trigger) and warnings (e.g., when trying to delete a mechanic assigned to an appointment).
 
-   - MySQL:
+---
 
-     ```powershell
-     mysql -u <user> -p <dbname> < project.sql
-     ```
+## Tech Stack
 
-   Replace `<user>` and `<dbname>` with your database user and name.
+* **Frontend:** **Streamlit** (for the web-based GUI)
+* **Backend:** **Python**
+* **Database:** **MySQL**
+* **Core Libraries:** `streamlit`, `sqlalchemy`, `mysqlclient`
 
-2. Configure secrets
+---
 
-   Create a Streamlit secrets file at `.streamlit/secrets.toml` and fill in your database credentials.
+## Database Design & Advanced Features
 
-3. Install Python dependencies
+The MySQL database schema features 8 tables: `customers`, `mechanics`, `services`, `parts`, `vehicles`, `orders`, `orderitems`, and `serviceappointments`.
 
-   ```powershell
-   pip install -r requirements.txt
-   ```
+This project implements advanced database features as required by the project rubrics:
 
-4. Run the Streamlit app
+### 1. Trigger: `trg_CheckMechanicName`
+* **Purpose:** Enforces data integrity (a "business rule").
+* **Action:** Fires `BEFORE INSERT` on the `mechanics` table.
+* **Logic:** Checks if the new `FirstName` or `LastName` contains any numbers. If it does, the trigger raises a custom error ("Error: Mechanic name cannot contain numbers."), which is caught and displayed by the Streamlit app.
 
-   ```powershell
-   streamlit run app.py
-   ```
+### 2. Stored Procedure: `sp_AddMechanic`
+* **Purpose:** Encapsulates the logic for adding a new mechanic.
+* **Action:** Takes `p_FirstName`, `p_LastName`, and `p_Specialization` as input parameters.
+* **Logic:** Runs the `INSERT` command. The `trg_CheckMechanicName` trigger is automatically fired by this `INSERT`. The Streamlit app calls this procedure instead of running a raw `INSERT` query.
 
-Repository / Git
+### 3. Function: `fn_GetMechanicDetails`
+* **Purpose:** A utility function for data formatting.
+* **Action:** Takes a mechanic's name and specialization as input.
+* **Logic:** Returns a single, formatted string (e.g., "Carlos Ray (Engine Specialist)") that can be used in `SELECT` queries for display.
 
-If you want to create a git repository locally and make the initial commit, run:
+---
 
-```powershell
-git init
-git add .
-git commit -m "Initial commit: add app and setup files"
+## Getting Started
+
+Follow these instructions to set up and run the project locally.
+
+### Prerequisites
+* [Python 3.9+](https://www.python.org/)
+* [MySQL Server](https://dev.mysql.com/downloads/mysql/) (Make sure the server is running)
+* [Git](https://git-scm.com/)
+
+### 1. Clone the Repository
+```bash
+git clone [https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git](https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git)
+cd YOUR_REPO_NAME
 ```
-
-Security notes
-- Never commit `.streamlit/secrets.toml` or any file containing plaintext credentials.
-- The provided `.streamlit/secrets.toml.example` is for reference only.
-
-Troubleshooting
-- If the app cannot connect to the database, verify `project.sql` was applied and credentials in `.streamlit/secrets.toml` are correct.
-- For DB-specific driver errors, install the appropriate driver (e.g., `psycopg2-binary` for PostgreSQL or `mysql-connector-python` for MySQL).
-
-Contact / Next steps
-- If you'd like, I can add a `Makefile`/scripts to automate these steps, or detect missing dependencies on startup. Tell me which DB you primarily target and I can further tailor instructions.
+### 2. Update secrets.toml with your SQL DB Information
+```toml
+username = "your sql username"
+password = "your sql password"
+```
+### 3. Install streamlit 
+```bash
+pip install streamlit
+```
+### 4. Run the App
+```python
+streamlit run app.py
+```
