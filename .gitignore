@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+ENV/
+.env
+.DS_Store
+.vscode/
+# Streamlit secrets should not be checked in
+.streamlit/secrets.toml
