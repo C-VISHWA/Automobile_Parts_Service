@@ -17,13 +17,7 @@ A simple Streamlit app for managing automobile parts and services. This reposito
 Setup
 1. Run the database schema
 
-   Use your database client to run `project.sql` so the database tables and sample data are created. Example commands:
-
-   - PostgreSQL:
-
-     ```powershell
-     psql -U <user> -d <dbname> -f project.sql
-     ```
+   Use your database client to run `project.sql` so the database tables and sample data are created. Example command:
 
    - MySQL:
 
@@ -31,29 +25,11 @@ Setup
      mysql -u <user> -p <dbname> < project.sql
      ```
 
-   - SQLite (if you want a local file):
-
-     ```powershell
-     sqlite3 mydb.sqlite < project.sql
-     ```
-
    Replace `<user>` and `<dbname>` with your database user and name.
 
 2. Configure secrets
 
-   Create a Streamlit secrets file at `.streamlit/secrets.toml` and fill in your database credentials. A safe example is provided at `.streamlit/secrets.toml.example`. Do NOT commit your real `.streamlit/secrets.toml` to source control.
-
-   Example `.streamlit/secrets.toml`:
-
-   ```toml
-   [database]
-   host = "localhost"
-   port = 5432
-   user = "your_db_user"
-   password = "your_db_password"
-   database = "your_db_name"
-   driver = "postgresql"  # optional: 'postgresql' or 'mysql' or 'sqlite'
-   ```
+   Create a Streamlit secrets file at `.streamlit/secrets.toml` and fill in your database credentials.
 
 3. Install Python dependencies
 
